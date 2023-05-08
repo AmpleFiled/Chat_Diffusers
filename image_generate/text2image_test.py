@@ -18,7 +18,10 @@ class Text2Image:
 
         self.device = device
         self.torch_dtype = torch.float16 if ("cuda" or "mps") in device else torch.float32
-        self.pipline = StableDiffusionPipeline.from_pretrained("../../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        # self.pipline = StableDiffusionPipeline.from_pretrained("../../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        self.pipline = StableDiffusionPipeline.from_pretrained(
+            "runwayml/stable-diffusion-v1-5",
+            trust_remote_code=True)
         self.pipline.to(device)
         # self.prompt = 'a high-quality, detailed, and professional image'
         # self.prompt = f"Complex 3 D rendering " \
@@ -38,7 +41,7 @@ class Text2Image:
 
         prompt = text + "," + self.prompt
         image_name = f"{str(uuid.uuid4())[:8]}.png"
-        image_filename = os.path.join('/Users/ample/Downloads/chat_sd/image', image_name)
+        image_filename = os.path.join('../image', image_name)
 
         image = self.pipline(prompt, num_inference_steps = 20).images[0]
         image.save(image_filename)

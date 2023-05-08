@@ -12,6 +12,7 @@ from langchain.agents import Tool, initialize_agent
 from langchain.chains.conversation.memory import ConversationBufferMemory
 # from langchain.chat_models import ChatOpenAI
 from langchain.llms.openai import OpenAI
+from image_generate.image_gen import Text2Image, ControlText2Image, CyberPunkText2Image
 
 import re
 import argparse
@@ -43,8 +44,10 @@ CHAT_DIFFUSERS_SUFFIX_CN = """
 Thought: Do I need to use a tool? {agent_scratchpad}
 """
 
+# 生成一张卡通风格小狗图片
 
-os.environ["OPENAI_API_KEY"] = "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"
+# os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 def cut_dialogue_history(history_memory, keep_last_n_words=500):
     if history_memory is None or len(history_memory) == 0:

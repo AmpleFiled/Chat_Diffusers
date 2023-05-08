@@ -26,7 +26,10 @@ class CyberPunkText2Image:
 
         self.device = device
         self.torch_dtype = torch.float16 if ("cuda" or "mps") in device else torch.float32
-        self.pipline = StableDiffusionPipeline.from_pretrained("../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        # self.pipline = StableDiffusionPipeline.from_pretrained("../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        self.pipline = StableDiffusionPipeline.from_pretrained(
+            "runwayml/stable-diffusion-v1-5",
+            trust_remote_code=True)
         self.pipline.to(device)
         self.prompt = f"Complex 3 D rendering " \
                       f"semi robot, in outer space, cyberpunk, robot parts, 150 mm, beautiful studio soft light, " \
@@ -45,7 +48,7 @@ class CyberPunkText2Image:
 
         prompt = text + "," + self.prompt
         image_name = f"{str(uuid.uuid4())[:8]}.png"
-        image_filename = os.path.join('/Users/ample/Downloads/chat_sd/image', image_name)
+        image_filename = os.path.join('./image', image_name)
         print("the CyberPunk prompt is:", prompt)
         image = self.pipline(prompt, num_inference_steps = 20).images[0]
         image.save(image_filename)
@@ -76,7 +79,7 @@ class TextGuided_image2image:
     def inference(self, text, image):
 
         prompt = text + "," + self.prompt
-        image_filename = os.path.join('/Users/ample/Downloads/chat_sd/image', f"{str(uuid.uuid4())[:8]}.png")
+        image_filename = os.path.join('./image', f"{str(uuid.uuid4())[:8]}.png")
         image = self.pipeline(prompt=prompt, image=image, strength=0.75, guidance_scale=7.5).images[0]
         image.save(image_filename)
         print(
@@ -92,7 +95,10 @@ class Text2Image:
 
         self.device = device
         self.torch_dtype = torch.float16 if ("cuda" or "mps") in device else torch.float32
-        self.pipline = StableDiffusionPipeline.from_pretrained("../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        # self.pipline = StableDiffusionPipeline.from_pretrained("../models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819", trust_remote_code=True)
+        self.pipline = StableDiffusionPipeline.from_pretrained(
+            "runwayml/stable-diffusion-v1-5",
+            trust_remote_code=True)
         self.pipline.to(device)
         # self.prompt = 'a high-quality, detailed, and professional image'
         self.prompt = "a high-quality, background clean"
@@ -143,7 +149,7 @@ class Dreambooth_Text2Image:
     def inference(self, text):
 
         prompt = text + "," + self.prompt
-        image_filename = os.path.join('../image', f"{str(uuid.uuid4())[:8]}.png")
+        image_filename = os.path.join('./image', f"{str(uuid.uuid4())[:8]}.png")
         image = self.pipline(prompt, num_inference_steps=50, guidance_scale=7.5).images[0]
         image.save(image_filename)
         print(
@@ -174,13 +180,14 @@ class ControlText2Image:
 
         self.device = device
         self.torch_dtype = torch.float16 if ("cuda" or "mps") in device else torch.float32
-        controlnet = ControlNetModel.from_pretrained("/Users/ample/.cache/huggingface/hub/models--lllyasviel--sd-controlnet-canny/snapshots/7f2f69197050967007f6bbd23ab5e52f0384162a", torch_dtype=torch.float16)
-        self.pipline = StableDiffusionControlNetPipeline.from_pretrained("/Users/ample/Downloads/models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819",
-                                                                         trust_remote_code=True, controlnet = controlnet, torch_dtype=torch.float16,safety_checker = None)
+        controlnet = ControlNetModel.from_pretrained("fusing/stable-diffusion-v1-5-controlnet-canny", torch_dtype=torch.float16)
+        # self.pipline = StableDiffusionControlNetPipeline.from_pretrained("/Users/ample/Downloads/models--runwayml--stable-diffusion-v1-5/snapshots/39593d5650112b4cc580433f6b0435385882d819",
+        #                                                                  trust_remote_code=True, controlnet = controlnet, torch_dtype=torch.float16,safety_checker = None)
+        self.pipline = StableDiffusionControlNetPipeline.from_pretrained(
+            "runwayml/stable-diffusion-v1-5",
+            trust_remote_code=True, controlnet=controlnet, torch_dtype=torch.float16, safety_checker=None)
         self.pipline.to(device)
-        self.prompt = 'style, typical style, professional environment, cinematic lighting, 8K' \
-                      'style, typical style, professional environment, cinematic lighting, 8K' \
-                      'a high-quality, detailed, and professional image'
+        self.prompt = f'style, strong target environment style'
 
     @prompts(name="transfer Image style using input image skeleton",
              description="useful when you want to generate an image from a user input text and maintain its component. "
@@ -204,11 +211,11 @@ class ControlText2Image:
         canny_image = Image.fromarray(image)
         prompt = instruct_text + " " + self.prompt
 
-        image_filename = os.path.join('/Users/ample/Downloads/chat_sd/image', f"{str(uuid.uuid4())[:8]}.png")
-        image_canny_filename = os.path.join('/Users/ample/Downloads/chat_sd/image', f"{str(uuid.uuid4())[:8]}_canny.png")
+        image_filename = os.path.join('./image', f"{str(uuid.uuid4())[:8]}.png")
+        image_canny_filename = os.path.join('./image', f"{str(uuid.uuid4())[:8]}_canny.png")
         canny_image.save(image_canny_filename)
         print("the control net input is:",prompt)
-        image = self.pipline(prompt, num_inference_steps=20, image=canny_image).images[0]
+        image = self.pipline(prompt, num_inference_steps=100, image=canny_image).images[0]
         image.save(image_filename)
 
         print(f"\nProcessed ControlNet_Text2Image, Input Text: {instruct_text}, Output Image: {image_filename}"
