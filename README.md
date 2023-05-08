@@ -56,10 +56,15 @@ python visual_chatgpt.py --load "Text2Image_cuda:0,ControlText2Image_cuda:0"
 ### Demo
 
  - generate normal image
+
+![截屏2023-05-08 23 20 37](https://user-images.githubusercontent.com/132820015/236863865-9462e23e-1281-4f6c-85be-4e68d53dac4d.jpg)
+
  
  - transfer image style
  
  - generate preset special style(CyberPunk) image
+ ![截屏2023-05-09 00 26 04](https://user-images.githubusercontent.com/132820015/236877979-3feb2998-3a71-44d4-9d16-28c79c20041d.jpg)
+
 
 ```sh
 conda create -n chatSD python=3.8
