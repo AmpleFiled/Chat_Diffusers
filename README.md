@@ -15,7 +15,7 @@ chat_diffusers is a image generation tool based on chat conversation interaction
 7. local personal LLM model(like ChatGLM) deploymen(to do..
 
 
-##Goal:
+## Goal:
 Chat Diffuers can make image generation ealier!
 
 
