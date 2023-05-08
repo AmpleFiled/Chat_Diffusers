@@ -66,12 +66,7 @@ python visual_chatgpt.py --load "Text2Image_cuda:0,ControlText2Image_cuda:0"
  ![截屏2023-05-09 00 26 04](https://user-images.githubusercontent.com/132820015/236877979-3feb2998-3a71-44d4-9d16-28c79c20041d.jpg)
 
 
-```sh
-conda create -n chatSD python=3.8
-conda install --yes --file requirements.txt
-```
 
-To use the generator, look at [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme). There is a global executable to run the generator in that package, aliased as `standard-readme`.
 
 ## Acknowledgement
 
