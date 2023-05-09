@@ -61,6 +61,8 @@ python visual_chatgpt.py --load "Text2Image_cuda:0,ControlText2Image_cuda:0"
 
  
  - transfer image style
+![WechatIMG1735](https://github.com/AmpleFiled/Chat_Diffusers/assets/132820015/a93298a7-fb46-4f20-8d4e-b1a923ee4986)
+
  
  - generate preset special style(CyberPunk) image
  ![截屏2023-05-09 00 26 04](https://user-images.githubusercontent.com/132820015/236877979-3feb2998-3a71-44d4-9d16-28c79c20041d.jpg)
